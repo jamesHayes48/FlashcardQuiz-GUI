@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36705.20 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlashcardQuiz-GUI", "FlashcardQuiz-GUI.csproj", "{E634D8B0-8605-4B29-B719-70121BABAF50}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E634D8B0-8605-4B29-B719-70121BABAF50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E634D8B0-8605-4B29-B719-70121BABAF50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E634D8B0-8605-4B29-B719-70121BABAF50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E634D8B0-8605-4B29-B719-70121BABAF50}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {06F5AB0F-A8CA-4BDB-90E0-4E9F3A190A48}
+	EndGlobalSection
+EndGlobal

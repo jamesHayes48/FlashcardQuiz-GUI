@@ -11,13 +11,13 @@ namespace FlashcardQuiz_GUI
         {
 
         }
-
-        private void button1_Click(object sender, EventArgs e)
+        public string SelectedFilePath { get; private set; }
+        private void btnOpenFile_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                string filePath = openFileDialog1.FileName;
-                MessageBox.Show("You selected: " + filePath);
+                SelectedFilePath = openFileDialog1.FileName;
+                MessageBox.Show("You selected: " + SelectedFilePath);
             }
         }
     }

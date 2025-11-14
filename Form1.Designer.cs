@@ -37,7 +37,7 @@
             // 
             // btnOpenFile
             // 
-            btnOpenFile.Location = new Point(330, 272);
+            btnOpenFile.Location = new Point(350, 298);
             btnOpenFile.Name = "btnOpenFile";
             btnOpenFile.Size = new Size(94, 29);
             btnOpenFile.TabIndex = 0;

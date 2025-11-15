@@ -29,7 +29,12 @@
         {
             openFileDialog1 = new OpenFileDialog();
             btnOpenFile = new Button();
-            label1 = new Label();
+            titleLabel = new Label();
+            menuPanel = new Panel();
+            quizPanel = new Panel();
+            questionLabel = new Label();
+            menuPanel.SuspendLayout();
+            quizPanel.SuspendLayout();
             SuspendLayout();
             // 
             // openFileDialog1
@@ -38,7 +43,7 @@
             // 
             // btnOpenFile
             // 
-            btnOpenFile.Location = new Point(350, 298);
+            btnOpenFile.Location = new Point(250, 142);
             btnOpenFile.Name = "btnOpenFile";
             btnOpenFile.Size = new Size(94, 29);
             btnOpenFile.TabIndex = 0;
@@ -46,32 +51,65 @@
             btnOpenFile.UseVisualStyleBackColor = true;
             btnOpenFile.Click += btnOpenFile_Click;
             // 
-            // label1
+            // titleLabel
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(339, 78);
-            label1.Name = "label1";
-            label1.Size = new Size(105, 20);
-            label1.TabIndex = 1;
-            label1.Text = "Flashcard Quiz";
+            titleLabel.AutoSize = true;
+            titleLabel.Location = new Point(239, 102);
+            titleLabel.Name = "titleLabel";
+            titleLabel.Size = new Size(105, 20);
+            titleLabel.TabIndex = 1;
+            titleLabel.Text = "Flashcard Quiz";
+            // 
+            // menuPanel
+            // 
+            menuPanel.Controls.Add(quizPanel);
+            menuPanel.Controls.Add(titleLabel);
+            menuPanel.Controls.Add(btnOpenFile);
+            menuPanel.Location = new Point(93, 67);
+            menuPanel.Name = "menuPanel";
+            menuPanel.Size = new Size(594, 318);
+            menuPanel.TabIndex = 2;
+            // 
+            // quizPanel
+            // 
+            quizPanel.Controls.Add(questionLabel);
+            quizPanel.Location = new Point(0, 3);
+            quizPanel.Name = "quizPanel";
+            quizPanel.Size = new Size(594, 318);
+            quizPanel.TabIndex = 2;
+            quizPanel.Visible = false;
+            // 
+            // questionLabel
+            // 
+            questionLabel.AutoSize = true;
+            questionLabel.Location = new Point(248, 20);
+            questionLabel.Name = "questionLabel";
+            questionLabel.Size = new Size(50, 20);
+            questionLabel.TabIndex = 0;
+            questionLabel.Text = "label1";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(label1);
-            Controls.Add(btnOpenFile);
+            Controls.Add(menuPanel);
             Name = "Form1";
             Text = "Flashcard Quiz";
+            menuPanel.ResumeLayout(false);
+            menuPanel.PerformLayout();
+            quizPanel.ResumeLayout(false);
+            quizPanel.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
         private OpenFileDialog openFileDialog1;
         private Button btnOpenFile;
-        private Label label1;
+        private Label titleLabel;
+        private Panel menuPanel;
+        private Panel quizPanel;
+        private Label questionLabel;
     }
 }

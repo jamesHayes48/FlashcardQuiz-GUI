@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FlashcardQuiz_GUI
@@ -19,7 +20,11 @@ namespace FlashcardQuiz_GUI
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            // Set quiz panel to be invisible at start
+            menuPanel.Dock = DockStyle.Fill;
+            quizPanel.Dock = DockStyle.Fill;
+            menuPanel.Visible = true;
+            quizPanel.Visible = false;
         }
       
         /// <summary>
@@ -33,7 +38,8 @@ namespace FlashcardQuiz_GUI
             {
                 SelectedFilePath = openFileDialog1.FileName;
                 MessageBox.Show("You selected: " + SelectedFilePath);
-                btnOpenFile.Visible = false;
+                menuPanel.Visible = false;
+                quizPanel.Visible = true;
             }
         }
 
@@ -41,15 +47,16 @@ namespace FlashcardQuiz_GUI
         /// Start loading the quiz from the selected file path
         /// </summary>
         /// <param name="filePath"></param>
-        private Quiz loadQuiz(string filePath)
+        private async Task<Quiz> loadQuizAsync(string filePath)
         {
             char delimiter = '|';
             Quiz quiz = new Quiz();
 
-            using (StreamReader reader = new StreamReader(filePath))
+            using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true))
+            using (var streamReader = new StreamReader(fileStream))
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                string? line;
+                while ((line = await streamReader.ReadLineAsync()) != null)
                 {
                     string[] data = line.Split(delimiter);
 

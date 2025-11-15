@@ -29,6 +29,7 @@
         {
             openFileDialog1 = new OpenFileDialog();
             btnOpenFile = new Button();
+            label1 = new Label();
             SuspendLayout();
             // 
             // openFileDialog1
@@ -45,20 +46,32 @@
             btnOpenFile.UseVisualStyleBackColor = true;
             btnOpenFile.Click += btnOpenFile_Click;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(339, 78);
+            label1.Name = "label1";
+            label1.Size = new Size(105, 20);
+            label1.TabIndex = 1;
+            label1.Text = "Flashcard Quiz";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(label1);
             Controls.Add(btnOpenFile);
             Name = "Form1";
-            Text = "Form1";
+            Text = "Flashcard Quiz";
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private OpenFileDialog openFileDialog1;
         private Button btnOpenFile;
+        private Label label1;
     }
 }

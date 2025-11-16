@@ -32,6 +32,10 @@
             titleLabel = new Label();
             menuPanel = new Panel();
             quizPanel = new Panel();
+            answer4 = new RadioButton();
+            answer3 = new RadioButton();
+            answer2 = new RadioButton();
+            answer1 = new RadioButton();
             questionLabel = new Label();
             menuPanel.SuspendLayout();
             quizPanel.SuspendLayout();
@@ -49,7 +53,7 @@
             btnOpenFile.TabIndex = 0;
             btnOpenFile.Text = "Open File";
             btnOpenFile.UseVisualStyleBackColor = true;
-            btnOpenFile.Click += btnOpenFile_Click;
+            btnOpenFile.Click += btnOpenFile_ClickAsync;
             // 
             // titleLabel
             // 
@@ -72,6 +76,10 @@
             // 
             // quizPanel
             // 
+            quizPanel.Controls.Add(answer4);
+            quizPanel.Controls.Add(answer3);
+            quizPanel.Controls.Add(answer2);
+            quizPanel.Controls.Add(answer1);
             quizPanel.Controls.Add(questionLabel);
             quizPanel.Location = new Point(0, 3);
             quizPanel.Name = "quizPanel";
@@ -79,10 +87,54 @@
             quizPanel.TabIndex = 2;
             quizPanel.Visible = false;
             // 
+            // answer4
+            // 
+            answer4.AutoSize = true;
+            answer4.Location = new Point(227, 274);
+            answer4.Name = "answer4";
+            answer4.Size = new Size(117, 24);
+            answer4.TabIndex = 4;
+            answer4.TabStop = true;
+            answer4.Text = "radioButton1";
+            answer4.UseVisualStyleBackColor = true;
+            // 
+            // answer3
+            // 
+            answer3.AutoSize = true;
+            answer3.Location = new Point(227, 213);
+            answer3.Name = "answer3";
+            answer3.Size = new Size(117, 24);
+            answer3.TabIndex = 3;
+            answer3.TabStop = true;
+            answer3.Text = "radioButton1";
+            answer3.UseVisualStyleBackColor = true;
+            // 
+            // answer2
+            // 
+            answer2.AutoSize = true;
+            answer2.Location = new Point(227, 156);
+            answer2.Name = "answer2";
+            answer2.Size = new Size(117, 24);
+            answer2.TabIndex = 2;
+            answer2.TabStop = true;
+            answer2.Text = "radioButton1";
+            answer2.UseVisualStyleBackColor = true;
+            // 
+            // answer1
+            // 
+            answer1.AutoSize = true;
+            answer1.Location = new Point(227, 97);
+            answer1.Name = "answer1";
+            answer1.Size = new Size(117, 24);
+            answer1.TabIndex = 1;
+            answer1.TabStop = true;
+            answer1.Text = "radioButton1";
+            answer1.UseVisualStyleBackColor = true;
+            // 
             // questionLabel
             // 
             questionLabel.AutoSize = true;
-            questionLabel.Location = new Point(248, 20);
+            questionLabel.Location = new Point(250, 23);
             questionLabel.Name = "questionLabel";
             questionLabel.Size = new Size(50, 20);
             questionLabel.TabIndex = 0;
@@ -111,5 +163,9 @@
         private Panel menuPanel;
         private Panel quizPanel;
         private Label questionLabel;
+        private RadioButton answer4;
+        private RadioButton answer3;
+        private RadioButton answer2;
+        private RadioButton answer1;
     }
 }

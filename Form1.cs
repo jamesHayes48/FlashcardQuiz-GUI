@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,9 @@ namespace FlashcardQuiz_GUI
         }
 
         public string SelectedFilePath { get; private set; }
-        public Quiz CurrentQuiz { get; private set; }
+        [DefaultValue(null)]
+        public Quiz CurrentQuiz { get; set; }
+        private int CurrentQuestionIndex { get; set; }
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -25,6 +28,7 @@ namespace FlashcardQuiz_GUI
             quizPanel.Dock = DockStyle.Fill;
             menuPanel.Visible = true;
             quizPanel.Visible = false;
+            CurrentQuiz = new Quiz();
         }
       
         /// <summary>
@@ -32,14 +36,21 @@ namespace FlashcardQuiz_GUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnOpenFile_Click(object sender, EventArgs e)
+        private async void btnOpenFile_ClickAsync(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 SelectedFilePath = openFileDialog1.FileName;
                 MessageBox.Show("You selected: " + SelectedFilePath);
+
+                // Load current selected quiz
+                CurrentQuiz = await loadQuizAsync(SelectedFilePath);
                 menuPanel.Visible = false;
                 quizPanel.Visible = true;
+                quizPanel.BringToFront();
+
+                CurrentQuestionIndex = 0;
+                displayQuestion(CurrentQuestionIndex);
             }
         }
 
@@ -58,23 +69,36 @@ namespace FlashcardQuiz_GUI
                 string? line;
                 while ((line = await streamReader.ReadLineAsync()) != null)
                 {
+                    if (string.IsNullOrWhiteSpace(line))
+                        continue;
+
                     string[] data = line.Split(delimiter);
 
                     // Take the answers from the line input
                     string[] answers = data.Skip(1).ToArray();
 
                     Question newQuestion = new Question(data[0], answers);
-                    newQuestion.DisplayAnswer();
                     quiz.AddQuestion(newQuestion);
                 }
             }
             return quiz;
         }
+        
+        private void displayQuestion(int index)
+        {
+            Question currentQuestion = CurrentQuiz.Questions[index];
+            questionLabel.Text = currentQuestion.QuestionText;
+
+            answer1.Text = currentQuestion.AnswerArray[0];
+            answer2.Text = currentQuestion.AnswerArray[1];
+            answer3.Text = currentQuestion.AnswerArray[2];
+            answer4.Text = currentQuestion.AnswerArray[3];
+        } 
     }
    
     public class Quiz
     {
-        private List<Question> Questions { get; set; }
+        public List<Question> Questions { get; private set; }
         public int Score { get; }
 
         public Quiz()

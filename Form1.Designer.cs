@@ -66,7 +66,6 @@
             // 
             // menuPanel
             // 
-            menuPanel.Controls.Add(quizPanel);
             menuPanel.Controls.Add(titleLabel);
             menuPanel.Controls.Add(btnOpenFile);
             menuPanel.Location = new Point(93, 67);
@@ -81,10 +80,10 @@
             quizPanel.Controls.Add(answer2);
             quizPanel.Controls.Add(answer1);
             quizPanel.Controls.Add(questionLabel);
-            quizPanel.Location = new Point(0, 3);
+            quizPanel.Location = new Point(33, 32);
             quizPanel.Name = "quizPanel";
             quizPanel.Size = new Size(594, 318);
-            quizPanel.TabIndex = 2;
+            quizPanel.TabIndex = 3;
             quizPanel.Visible = false;
             // 
             // answer4
@@ -145,6 +144,7 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(quizPanel);
             Controls.Add(menuPanel);
             Name = "Form1";
             Text = "Flashcard Quiz";
@@ -162,10 +162,10 @@
         private Label titleLabel;
         private Panel menuPanel;
         private Panel quizPanel;
-        private Label questionLabel;
         private RadioButton answer4;
         private RadioButton answer3;
         private RadioButton answer2;
         private RadioButton answer1;
+        private Label questionLabel;
     }
 }

@@ -47,7 +47,6 @@ namespace FlashcardQuiz_GUI
                 CurrentQuiz = await loadQuizAsync(SelectedFilePath);
                 menuPanel.Visible = false;
                 quizPanel.Visible = true;
-                quizPanel.BringToFront();
 
                 CurrentQuestionIndex = 0;
                 displayQuestion(CurrentQuestionIndex);

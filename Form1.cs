@@ -59,7 +59,14 @@ namespace FlashcardQuiz_GUI
                 quizPanel.Visible = true;
 
                 CurrentQuestionIndex = 0;
-                displayQuestion(CurrentQuestionIndex);
+                try
+                {
+                    displayQuestion(CurrentQuestionIndex);
+                }
+                catch (Exception ex) 
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 
@@ -85,21 +92,29 @@ namespace FlashcardQuiz_GUI
         {
             char delimiter = '|';
             Quiz quiz = new Quiz();
+            int lineNumber = 0;
 
+            // Read file asynchronusly
             using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true))
             using (var streamReader = new StreamReader(fileStream))
             {
                 string? line;
                 while ((line = await streamReader.ReadLineAsync()) != null)
                 {
+                    // Skip line if it is null or whitespace
                     if (string.IsNullOrWhiteSpace(line))
                         continue;
 
                     string[] data = line.Split(delimiter);
 
+                    // Check if line is formatted with delimeter
+                    if (data.Length < 5)
+                        throw new Exception($"Line {lineNumber}: Expected 1 Question and 4 Answers separated with delimeter {delimiter}, format contains {data.Length} parts");
+
                     // Take the answers from the line input
                     string[] answers = data.Skip(1).ToArray();
 
+                    // Create and add question to quiz
                     Question newQuestion = new Question(data[0], answers);
                     quiz.AddQuestion(newQuestion);
                 }

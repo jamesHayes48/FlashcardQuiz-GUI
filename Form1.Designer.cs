@@ -74,6 +74,8 @@
             menuPanel.Name = "menuPanel";
             menuPanel.Size = new Size(594, 318);
             menuPanel.TabIndex = 2;
+            menuPanel.Dock = DockStyle.Fill;
+            menuPanel.Padding = new Padding(24);
             // 
             // quizPanel
             // 
@@ -89,6 +91,8 @@
             quizPanel.Size = new Size(594, 318);
             quizPanel.TabIndex = 3;
             quizPanel.Visible = false;
+            quizPanel.Dock = DockStyle.Fill;
+            quizPanel.Padding = new Padding(24);
             // 
             // btnBack
             // 

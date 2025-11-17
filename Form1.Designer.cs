@@ -32,6 +32,8 @@
             titleLabel = new Label();
             menuPanel = new Panel();
             quizPanel = new Panel();
+            btnBack = new Button();
+            btnNext = new Button();
             answer4 = new RadioButton();
             answer3 = new RadioButton();
             answer2 = new RadioButton();
@@ -75,6 +77,8 @@
             // 
             // quizPanel
             // 
+            quizPanel.Controls.Add(btnBack);
+            quizPanel.Controls.Add(btnNext);
             quizPanel.Controls.Add(answer4);
             quizPanel.Controls.Add(answer3);
             quizPanel.Controls.Add(answer2);
@@ -86,6 +90,26 @@
             quizPanel.TabIndex = 3;
             quizPanel.Visible = false;
             // 
+            // btnBack
+            // 
+            btnBack.Location = new Point(15, 269);
+            btnBack.Name = "btnBack";
+            btnBack.Size = new Size(94, 29);
+            btnBack.TabIndex = 6;
+            btnBack.Text = "Back";
+            btnBack.UseVisualStyleBackColor = true;
+            btnBack.Click += btnBack_Click;
+            // 
+            // btnNext
+            // 
+            btnNext.Location = new Point(483, 269);
+            btnNext.Name = "btnNext";
+            btnNext.Size = new Size(94, 29);
+            btnNext.TabIndex = 5;
+            btnNext.Text = "Next";
+            btnNext.UseVisualStyleBackColor = true;
+            btnNext.Click += btnNext_Click;
+            // 
             // answer4
             // 
             answer4.AutoSize = true;
@@ -94,6 +118,7 @@
             answer4.Size = new Size(117, 24);
             answer4.TabIndex = 4;
             answer4.TabStop = true;
+            answer4.Tag = "D";
             answer4.Text = "radioButton1";
             answer4.UseVisualStyleBackColor = true;
             // 
@@ -105,6 +130,7 @@
             answer3.Size = new Size(117, 24);
             answer3.TabIndex = 3;
             answer3.TabStop = true;
+            answer3.Tag = "C";
             answer3.Text = "radioButton1";
             answer3.UseVisualStyleBackColor = true;
             // 
@@ -116,6 +142,7 @@
             answer2.Size = new Size(117, 24);
             answer2.TabIndex = 2;
             answer2.TabStop = true;
+            answer2.Tag = "B";
             answer2.Text = "radioButton1";
             answer2.UseVisualStyleBackColor = true;
             // 
@@ -127,6 +154,7 @@
             answer1.Size = new Size(117, 24);
             answer1.TabIndex = 1;
             answer1.TabStop = true;
+            answer1.Tag = "A";
             answer1.Text = "radioButton1";
             answer1.UseVisualStyleBackColor = true;
             // 
@@ -167,5 +195,7 @@
         private RadioButton answer2;
         private RadioButton answer1;
         private Label questionLabel;
+        private Button btnBack;
+        private Button btnNext;
     }
 }

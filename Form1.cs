@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FlashcardQuiz_GUI
 {
+    public enum Options
+    {
+        A = 0,
+        B = 1,
+        C = 2,
+        D = 3
+
+    }
     public partial class Form1 : Form
     {
         public Form1()
@@ -28,6 +37,7 @@ namespace FlashcardQuiz_GUI
             quizPanel.Dock = DockStyle.Fill;
             menuPanel.Visible = true;
             quizPanel.Visible = false;
+            quizPanel.BringToFront();
             CurrentQuiz = new Quiz();
         }
       
@@ -51,6 +61,20 @@ namespace FlashcardQuiz_GUI
                 CurrentQuestionIndex = 0;
                 displayQuestion(CurrentQuestionIndex);
             }
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            if (CurrentQuestionIndex < CurrentQuiz.Questions.Count - 1)
+                CurrentQuestionIndex++;
+                displayQuestion(CurrentQuestionIndex);
+        }
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            if (CurrentQuestionIndex > 0)
+                CurrentQuestionIndex--;
+                displayQuestion(CurrentQuestionIndex);
         }
 
         /// <summary>
@@ -85,20 +109,37 @@ namespace FlashcardQuiz_GUI
         
         private void displayQuestion(int index)
         {
-            Question currentQuestion = CurrentQuiz.Questions[index];
-            questionLabel.Text = currentQuestion.QuestionText;
+            try 
+            {
+                // Update the questions and answer radio buttons
+                Question currentQuestion = CurrentQuiz.Questions[index];
+                questionLabel.Text = currentQuestion.QuestionText;
 
-            answer1.Text = currentQuestion.AnswerArray[0];
-            answer2.Text = currentQuestion.AnswerArray[1];
-            answer3.Text = currentQuestion.AnswerArray[2];
-            answer4.Text = currentQuestion.AnswerArray[3];
+                answer1.Text = currentQuestion.AnswerArray[0];
+                answer2.Text = currentQuestion.AnswerArray[1];
+                answer3.Text = currentQuestion.AnswerArray[2];
+                answer4.Text = currentQuestion.AnswerArray[3];
+
+                // Hide the buttons if at start or end of quiz
+                btnBack.Visible = index > 0;
+                btnNext.Visible = index < CurrentQuiz.Questions.Count - 1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error displaying question: " + ex.Message);
+            }
         } 
+
+        private void compareAnswer()
+        {
+
+        }
     }
    
     public class Quiz
     {
         public List<Question> Questions { get; private set; }
-        public int Score { get; }
+        public int Score { get; private set; }
 
         public Quiz()
         {
@@ -113,6 +154,11 @@ namespace FlashcardQuiz_GUI
         public void AddQuestion(Question question)
         {
             Questions.Add(question);
+        }
+
+        public void checkScore()
+        {
+            Score++;
         }
     }
 
@@ -148,5 +194,12 @@ namespace FlashcardQuiz_GUI
         {
             return userAnswerIndex == CorrectAnswerIndex;
         }
+    }
+
+    public class QuizUser
+    {
+        public int[] Chosen { get; set; }
+        public int Score { get; set; }
+
     }
 }

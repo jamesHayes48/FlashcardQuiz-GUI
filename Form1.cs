@@ -10,25 +10,19 @@ using System.Windows.Forms;
 
 namespace FlashcardQuiz_GUI
 {
-    public enum Options
-    {
-        A = 0,
-        B = 1,
-        C = 2,
-        D = 3
-
-    }
     public partial class Form1 : Form
     {
         public Form1()
         {
             InitializeComponent();
+            //this.Load += Form1_Load;
         }
 
         public string SelectedFilePath { get; private set; }
         [DefaultValue(null)]
         public Quiz CurrentQuiz { get; set; }
         private int CurrentQuestionIndex { get; set; }
+        private List<int> UserAnswerIndex;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -38,9 +32,20 @@ namespace FlashcardQuiz_GUI
             menuPanel.Visible = true;
             quizPanel.Visible = false;
             quizPanel.BringToFront();
+
+            // Initialize current quiz and user choices
             CurrentQuiz = new Quiz();
+            UserAnswerIndex = new List<int>();
         }
-      
+
+        private void Answer_CheckedChanged(object? sender, EventArgs e)
+        {
+            if (sender is RadioButton rb && rb.Checked)
+            {
+                SaveCurrentAnswer();
+            }
+        }
+
         /// <summary>
         /// Open file dialog to select quiz
         /// </summary>
@@ -55,6 +60,13 @@ namespace FlashcardQuiz_GUI
 
                 // Load current selected quiz
                 CurrentQuiz = await loadQuizAsync(SelectedFilePath);
+
+                // Populate the user answer index list with -1
+                while (UserAnswerIndex.Count <= CurrentQuiz.Questions.Count)
+                {
+                    UserAnswerIndex.Add(-1);
+                }
+
                 menuPanel.Visible = false;
                 quizPanel.Visible = true;
 
@@ -73,15 +85,24 @@ namespace FlashcardQuiz_GUI
         private void btnNext_Click(object sender, EventArgs e)
         {
             if (CurrentQuestionIndex < CurrentQuiz.Questions.Count - 1)
+            {
                 CurrentQuestionIndex++;
                 displayQuestion(CurrentQuestionIndex);
+            }
         }
 
+        /// <summary>
+        /// Move to the previous Question
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnBack_Click(object sender, EventArgs e)
         {
             if (CurrentQuestionIndex > 0)
+            {
                 CurrentQuestionIndex--;
                 displayQuestion(CurrentQuestionIndex);
+            }    
         }
 
         /// <summary>
@@ -126,7 +147,7 @@ namespace FlashcardQuiz_GUI
         {
             try 
             {
-                // Update the questions and answer radio buttons
+                // Update the questions and radio buttons
                 Question currentQuestion = CurrentQuiz.Questions[index];
                 questionLabel.Text = currentQuestion.QuestionText;
 
@@ -134,6 +155,25 @@ namespace FlashcardQuiz_GUI
                 answer2.Text = currentQuestion.AnswerArray[1];
                 answer3.Text = currentQuestion.AnswerArray[2];
                 answer4.Text = currentQuestion.AnswerArray[3];
+
+                // Check if current index has been answered already,
+                // if not, uncheck the radio buttons
+                // if so, Update with which one is checked
+                if (index >= UserAnswerIndex.Count)
+                {
+                    answer1.Checked = false;
+                    answer2.Checked = false;
+                    answer3.Checked = false;
+                    answer4.Checked = false;
+                }
+                else 
+                {
+                    int saved = UserAnswerIndex[index];
+                    answer1.Checked = (saved == 0);
+                    answer2.Checked = (saved == 1);
+                    answer3.Checked = (saved == 2);
+                    answer4.Checked = (saved == 3);
+                }
 
                 // Hide the buttons if at start or end of quiz
                 btnBack.Visible = index > 0;
@@ -144,6 +184,19 @@ namespace FlashcardQuiz_GUI
                 MessageBox.Show("Error displaying question: " + ex.Message);
             }
         } 
+
+        private void SaveCurrentAnswer()
+        {
+            int selected = -1;
+
+            if (answer1.Checked) selected = 0;
+            else if(answer2.Checked) selected = 1;
+            else if(answer3.Checked) selected = 2;
+            else if(answer4.Checked) selected = 3;
+
+            UserAnswerIndex[CurrentQuestionIndex] = selected;
+            
+        }
 
         private void compareAnswer()
         {
@@ -171,7 +224,7 @@ namespace FlashcardQuiz_GUI
             Questions.Add(question);
         }
 
-        public void checkScore()
+        public void incrementScore()
         {
             Score++;
         }
@@ -209,12 +262,5 @@ namespace FlashcardQuiz_GUI
         {
             return userAnswerIndex == CorrectAnswerIndex;
         }
-    }
-
-    public class QuizUser
-    {
-        public int[] Chosen { get; set; }
-        public int Score { get; set; }
-
     }
 }

@@ -70,12 +70,12 @@
             // 
             menuPanel.Controls.Add(titleLabel);
             menuPanel.Controls.Add(btnOpenFile);
-            menuPanel.Location = new Point(93, 67);
-            menuPanel.Name = "menuPanel";
-            menuPanel.Size = new Size(594, 318);
-            menuPanel.TabIndex = 2;
             menuPanel.Dock = DockStyle.Fill;
+            menuPanel.Location = new Point(0, 0);
+            menuPanel.Name = "menuPanel";
             menuPanel.Padding = new Padding(24);
+            menuPanel.Size = new Size(800, 450);
+            menuPanel.TabIndex = 2;
             // 
             // quizPanel
             // 
@@ -86,13 +86,13 @@
             quizPanel.Controls.Add(answer2);
             quizPanel.Controls.Add(answer1);
             quizPanel.Controls.Add(questionLabel);
-            quizPanel.Location = new Point(33, 32);
+            quizPanel.Dock = DockStyle.Fill;
+            quizPanel.Location = new Point(0, 0);
             quizPanel.Name = "quizPanel";
-            quizPanel.Size = new Size(594, 318);
+            quizPanel.Padding = new Padding(24);
+            quizPanel.Size = new Size(800, 450);
             quizPanel.TabIndex = 3;
             quizPanel.Visible = false;
-            quizPanel.Dock = DockStyle.Fill;
-            quizPanel.Padding = new Padding(24);
             // 
             // btnBack
             // 
@@ -125,6 +125,7 @@
             answer4.Tag = "D";
             answer4.Text = "radioButton1";
             answer4.UseVisualStyleBackColor = true;
+            answer4.CheckedChanged += Answer_CheckedChanged;
             // 
             // answer3
             // 
@@ -137,6 +138,7 @@
             answer3.Tag = "C";
             answer3.Text = "radioButton1";
             answer3.UseVisualStyleBackColor = true;
+            answer3.CheckedChanged += Answer_CheckedChanged;
             // 
             // answer2
             // 
@@ -149,6 +151,7 @@
             answer2.Tag = "B";
             answer2.Text = "radioButton1";
             answer2.UseVisualStyleBackColor = true;
+            answer2.CheckedChanged += Answer_CheckedChanged;
             // 
             // answer1
             // 
@@ -161,6 +164,7 @@
             answer1.Tag = "A";
             answer1.Text = "radioButton1";
             answer1.UseVisualStyleBackColor = true;
+            answer1.CheckedChanged += Answer_CheckedChanged;
             // 
             // questionLabel
             // 
@@ -180,6 +184,7 @@
             Controls.Add(menuPanel);
             Name = "Form1";
             Text = "Flashcard Quiz";
+            Load += Form1_Load;
             menuPanel.ResumeLayout(false);
             menuPanel.PerformLayout();
             quizPanel.ResumeLayout(false);

@@ -15,7 +15,6 @@ namespace FlashcardQuiz_GUI
         public Form1()
         {
             InitializeComponent();
-            //this.Load += Form1_Load;
         }
 
         public string SelectedFilePath { get; private set; }

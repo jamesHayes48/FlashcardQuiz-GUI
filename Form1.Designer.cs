@@ -32,6 +32,7 @@
             titleLabel = new Label();
             menuPanel = new Panel();
             quizPanel = new Panel();
+            btnSubmit = new Button();
             btnBack = new Button();
             btnNext = new Button();
             answer4 = new RadioButton();
@@ -86,6 +87,7 @@
             quizPanel.Controls.Add(answer2);
             quizPanel.Controls.Add(answer1);
             quizPanel.Controls.Add(questionLabel);
+            quizPanel.Controls.Add(btnSubmit);
             quizPanel.Dock = DockStyle.Fill;
             quizPanel.Location = new Point(0, 0);
             quizPanel.Name = "quizPanel";
@@ -93,6 +95,17 @@
             quizPanel.Size = new Size(800, 450);
             quizPanel.TabIndex = 3;
             quizPanel.Visible = false;
+            // 
+            // btnSubmit
+            // 
+            btnSubmit.Location = new Point(483, 269);
+            btnSubmit.Name = "btnSubmit";
+            btnSubmit.Size = new Size(94, 29);
+            btnSubmit.TabIndex = 7;
+            btnSubmit.Text = "Submit";
+            btnSubmit.UseVisualStyleBackColor = true;
+            btnSubmit.Visible = false;
+            btnSubmit.Click += btnSubmit_Click;
             // 
             // btnBack
             // 
@@ -130,7 +143,7 @@
             // answer3
             // 
             answer3.AutoSize = true;
-            answer3.Location = new Point(227, 213);
+            answer3.Location = new Point(227, 215);
             answer3.Name = "answer3";
             answer3.Size = new Size(117, 24);
             answer3.TabIndex = 3;
@@ -206,5 +219,6 @@
         private Label questionLabel;
         private Button btnBack;
         private Button btnNext;
+        private Button btnSubmit;
     }
 }

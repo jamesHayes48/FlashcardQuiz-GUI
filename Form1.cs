@@ -37,6 +37,11 @@ namespace FlashcardQuiz_GUI
             UserAnswerIndex = new List<int>();
         }
 
+        /// <summary>
+        /// Check if Answer is checked and which radio button was it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Answer_CheckedChanged(object? sender, EventArgs e)
         {
             if (sender is RadioButton rb && rb.Checked)
@@ -61,7 +66,7 @@ namespace FlashcardQuiz_GUI
                 CurrentQuiz = await loadQuizAsync(SelectedFilePath);
 
                 // Populate the user answer index list with -1
-                while (UserAnswerIndex.Count <= CurrentQuiz.Questions.Count)
+                while (UserAnswerIndex.Count != CurrentQuiz.Questions.Count)
                 {
                     UserAnswerIndex.Add(-1);
                 }
@@ -74,13 +79,18 @@ namespace FlashcardQuiz_GUI
                 {
                     displayQuestion(CurrentQuestionIndex);
                 }
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
             }
         }
 
+        /// <summary>
+        /// Move to the next question
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnNext_Click(object sender, EventArgs e)
         {
             if (CurrentQuestionIndex < CurrentQuiz.Questions.Count - 1)
@@ -101,7 +111,7 @@ namespace FlashcardQuiz_GUI
             {
                 CurrentQuestionIndex--;
                 displayQuestion(CurrentQuestionIndex);
-            }    
+            }
         }
 
         /// <summary>
@@ -141,10 +151,10 @@ namespace FlashcardQuiz_GUI
             }
             return quiz;
         }
-        
+
         private void displayQuestion(int index)
         {
-            try 
+            try
             {
                 // Update the questions and radio buttons
                 Question currentQuestion = CurrentQuiz.Questions[index];
@@ -165,7 +175,7 @@ namespace FlashcardQuiz_GUI
                     answer3.Checked = false;
                     answer4.Checked = false;
                 }
-                else 
+                else
                 {
                     int saved = UserAnswerIndex[index];
                     answer1.Checked = (saved == 0);
@@ -177,24 +187,64 @@ namespace FlashcardQuiz_GUI
                 // Hide the buttons if at start or end of quiz
                 btnBack.Visible = index > 0;
                 btnNext.Visible = index < CurrentQuiz.Questions.Count - 1;
+                btnSubmit.Visible = index == CurrentQuiz.Questions.Count - 1;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error displaying question: " + ex.Message);
             }
-        } 
+        }
 
         private void SaveCurrentAnswer()
         {
             int selected = -1;
 
             if (answer1.Checked) selected = 0;
-            else if(answer2.Checked) selected = 1;
-            else if(answer3.Checked) selected = 2;
-            else if(answer4.Checked) selected = 3;
+            else if (answer2.Checked) selected = 1;
+            else if (answer3.Checked) selected = 2;
+            else if (answer4.Checked) selected = 3;
 
             UserAnswerIndex[CurrentQuestionIndex] = selected;
+
+        }
+
+        /// <summary>
+        /// Check if user can submit. Make sure user submits answers for all questions
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSubmit_Click(object sender, EventArgs e)
+        {
+            // Decide if all questions are answered
+            bool answeredAll = true;
+
+            // Hold which questions are unanswered
+            List<int> unanswered = new List<int>();
             
+            for(int i = 0; i<= UserAnswerIndex.Count - 1; i++)
+            {
+                if (UserAnswerIndex[i] == -1)
+                {
+                    unanswered.Add(i + 1);
+                    answeredAll = false;
+                }
+            }
+            
+            // Submit quiz if user answered all questions
+            if (answeredAll)
+            {
+                MessageBox.Show("hehe, answered all questions :3");
+            }
+            // Display all questions that need answered
+            else 
+            {
+                MessageBox.Show($"Must answer all questions before submitting quiz: \n{string.Join("\n", unanswered)}");
+            }
+        }
+
+        private void submitQuiz()
+        {
+
         }
 
         private void compareAnswer()
@@ -202,7 +252,7 @@ namespace FlashcardQuiz_GUI
 
         }
     }
-   
+
     public class Quiz
     {
         public List<Question> Questions { get; private set; }

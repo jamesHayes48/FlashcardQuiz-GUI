@@ -32,7 +32,6 @@
             titleLabel = new Label();
             menuPanel = new Panel();
             quizPanel = new Panel();
-            btnSubmit = new Button();
             btnBack = new Button();
             btnNext = new Button();
             answer4 = new RadioButton();
@@ -40,6 +39,7 @@
             answer2 = new RadioButton();
             answer1 = new RadioButton();
             questionLabel = new Label();
+            btnSubmit = new Button();
             menuPanel.SuspendLayout();
             quizPanel.SuspendLayout();
             SuspendLayout();
@@ -95,17 +95,6 @@
             quizPanel.Size = new Size(800, 450);
             quizPanel.TabIndex = 3;
             quizPanel.Visible = false;
-            // 
-            // btnSubmit
-            // 
-            btnSubmit.Location = new Point(483, 269);
-            btnSubmit.Name = "btnSubmit";
-            btnSubmit.Size = new Size(94, 29);
-            btnSubmit.TabIndex = 7;
-            btnSubmit.Text = "Submit";
-            btnSubmit.UseVisualStyleBackColor = true;
-            btnSubmit.Visible = false;
-            btnSubmit.Click += btnSubmit_Click;
             // 
             // btnBack
             // 
@@ -187,6 +176,17 @@
             questionLabel.Size = new Size(50, 20);
             questionLabel.TabIndex = 0;
             questionLabel.Text = "label1";
+            // 
+            // btnSubmit
+            // 
+            btnSubmit.Location = new Point(483, 269);
+            btnSubmit.Name = "btnSubmit";
+            btnSubmit.Size = new Size(94, 29);
+            btnSubmit.TabIndex = 7;
+            btnSubmit.Text = "Submit";
+            btnSubmit.UseVisualStyleBackColor = true;
+            btnSubmit.Visible = false;
+            btnSubmit.Click += btnSubmit_Click;
             // 
             // Form1
             // 

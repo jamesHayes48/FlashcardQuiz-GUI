@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,11 +18,20 @@ namespace FlashcardQuiz_GUI
             InitializeComponent();
         }
 
-        public string SelectedFilePath { get; private set; }
-        [DefaultValue(null)]
-        public Quiz CurrentQuiz { get; set; }
+        // Represent the file path user chooses
+        private string SelectedFilePath { get; set; }
+
+        // Represent the current Quiz from the selected file
+        private Quiz CurrentQuiz = new Quiz();
+
+        // Hold current index of question
         private int CurrentQuestionIndex { get; set; }
+
+        // Hold saved answers 
         private List<int> UserAnswerIndex;
+
+        // Hold current score
+        private int Score = 0;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -63,7 +73,10 @@ namespace FlashcardQuiz_GUI
                 MessageBox.Show("You selected: " + SelectedFilePath);
 
                 // Load current selected quiz
-                CurrentQuiz = await loadQuizAsync(SelectedFilePath);
+                CurrentQuiz = await LoadQuizAsync(SelectedFilePath);
+
+                // Set score to be the number of questions
+                Score = CurrentQuiz.Questions.Count;
 
                 // Populate the user answer index list with -1
                 while (UserAnswerIndex.Count != CurrentQuiz.Questions.Count)
@@ -93,11 +106,17 @@ namespace FlashcardQuiz_GUI
         /// <param name="e"></param>
         private void btnNext_Click(object sender, EventArgs e)
         {
-            if (CurrentQuestionIndex < CurrentQuiz.Questions.Count - 1)
-            {
-                CurrentQuestionIndex++;
-                displayQuestion(CurrentQuestionIndex);
-            }
+            if (quizPanel.Visible == true)
+                if (CurrentQuestionIndex < CurrentQuiz.Questions.Count - 1)
+                {
+                    CurrentQuestionIndex++;
+                    displayQuestion(CurrentQuestionIndex);
+                }
+            else
+                {
+                    CurrentQuestionIndex++;
+                    //displaySummaryQuestion(CurrentQuestionIndex);
+                }
         }
 
         /// <summary>
@@ -115,10 +134,10 @@ namespace FlashcardQuiz_GUI
         }
 
         /// <summary>
-        /// Start loading the quiz from the selected file path
+        /// Start loading the quiz asynchronusly from the selected file path
         /// </summary>
         /// <param name="filePath"></param>
-        private async Task<Quiz> loadQuizAsync(string filePath)
+        private async Task<Quiz> LoadQuizAsync(string filePath)
         {
             char delimiter = '|';
             Quiz quiz = new Quiz();
@@ -220,8 +239,8 @@ namespace FlashcardQuiz_GUI
 
             // Hold which questions are unanswered
             List<int> unanswered = new List<int>();
-            
-            for(int i = 0; i<= UserAnswerIndex.Count - 1; i++)
+
+            for (int i = 0; i <= UserAnswerIndex.Count - 1; i++)
             {
                 if (UserAnswerIndex[i] == -1)
                 {
@@ -229,87 +248,58 @@ namespace FlashcardQuiz_GUI
                     answeredAll = false;
                 }
             }
-            
+
             // Submit quiz if user answered all questions
             if (answeredAll)
             {
-                MessageBox.Show("hehe, answered all questions :3");
+                MessageBox.Show("hehe, answered all questions :3 dddddddddddddd    dddddddddddddddd   ddddddddddddddd   dddddddd");
             }
             // Display all questions that need answered
-            else 
+            else
             {
-                MessageBox.Show($"Must answer all questions before submitting quiz: \n{string.Join("\n", unanswered)}");
+                quizPanel.Visible = false;
+                //summaryPanel.Visible = true;
+                CurrentQuestionIndex = 0;
+                //displaySummaryQuestion(CurrentQuestionIndex);
             }
         }
 
-        private void submitQuiz()
+        /// <summary>
+        /// Find incorrect answers
+        /// </summary>
+        private List<int> CompareAnswer()
         {
-
-        }
-
-        private void compareAnswer()
-        {
-
-        }
-    }
-
-    public class Quiz
-    {
-        public List<Question> Questions { get; private set; }
-        public int Score { get; private set; }
-
-        public Quiz()
-        {
-            Questions = new List<Question>();
-        }
-
-        public Quiz(List<Question> questions)
-        {
-            Questions = questions;
-        }
-
-        public void AddQuestion(Question question)
-        {
-            Questions.Add(question);
-        }
-
-        public void incrementScore()
-        {
-            Score++;
-        }
-    }
-
-    public class Question
-    {
-        public string QuestionText { get; set; }
-        public string[] AnswerArray { get; set; }
-        public int CorrectAnswerIndex { get; set; }
-
-        public Question(string questionText, string[] answerArray)
-        {
-            QuestionText = questionText;
-
-            // Assign Correct answer index based on where the star is located
-            for (int i = 0; i < answerArray.Length; i++)
+            // Hold questions marked incorrect
+            List<int> incorrectAnswersIndex = new List<int>();
+            for (int i = 0; i <= UserAnswerIndex.Count; i++)
             {
-                if (answerArray[i].StartsWith("*"))
+                // If answers do not match, decrement score and add to incorrect answers for UI
+                if (UserAnswerIndex[i] != CurrentQuiz.Questions[i].CorrectAnswerIndex)
                 {
-                    // Set the correct answer index and remove the star
-                    CorrectAnswerIndex = i;
-                    answerArray[i] = answerArray[i].Substring(1);
+                    Score--;
+                    incorrectAnswersIndex.Add(i);
                 }
             }
-            AnswerArray = answerArray;
+            return incorrectAnswersIndex;
         }
 
-        public void DisplayAnswer()
+        /*
+        /// <summary>
+        /// Display if there are incorrect answers or not
+        /// </summary>
+        private void displaySummaryQuestion(int index)
         {
-            Console.WriteLine($"Correct Answer: {AnswerArray[CorrectAnswerIndex]}");
-        }
+            string[] = new string[4];
+            foreach (string qText in CurrentQuiz.Questions[index].AnswerArray)
+            {
+                string
+            }
 
-        public bool IsCorrect(int userAnswerIndex)
-        {
-            return userAnswerIndex == CorrectAnswerIndex;
+            // Hide the buttons if at start or end of quiz
+            btnBack.Visible = index > 0;
+            btnNext.Visible = index < CurrentQuiz.Questions.Count - 1;
+            btnQuit.Visible = index == CurrentQuiz.Questions.Count - 1;
         }
+        */
     }
 }

@@ -33,6 +33,9 @@ namespace FlashcardQuiz_GUI
         // Hold current score
         private int Score = 0;
 
+        // Hold state of program
+        private bool Submitted = false;
+
         private void Form1_Load(object sender, EventArgs e)
         {
             // Set quiz panel to be invisible at start
@@ -112,7 +115,7 @@ namespace FlashcardQuiz_GUI
                     CurrentQuestionIndex++;
                     displayQuestion(CurrentQuestionIndex);
                 }
-            else
+                else
                 {
                     CurrentQuestionIndex++;
                     //displaySummaryQuestion(CurrentQuestionIndex);
@@ -201,7 +204,51 @@ namespace FlashcardQuiz_GUI
                     answer2.Checked = (saved == 1);
                     answer3.Checked = (saved == 2);
                     answer4.Checked = (saved == 3);
+
+                    if (Submitted == true)
+                    {
+                        if (saved == CurrentQuiz.Questions[index].CorrectAnswerIndex)
+                        {
+                            switch (saved)
+                            {
+                                case 0:
+                                    answer1.BackColor = Color.Green;
+                                    break;
+                                case 1:
+                                    answer2.BackColor = Color.Green;
+                                    break;
+                                case 2:
+                                    answer3.BackColor = Color.Green;
+                                    break;
+                                case 3:
+                                    answer4.BackColor = Color.Green;
+                                    break;
+
+                            }
+                        }
+                        else
+                        {
+                            switch (saved)
+                            {
+                                case 0:
+                                    answer1.BackColor = Color.Red;
+                                    break;
+                                case 1:
+                                    answer2.BackColor = Color.Red;
+                                    break;
+                                case 2:
+                                    answer3.BackColor = Color.Red;
+                                    break;
+                                case 3:
+                                    answer4.BackColor = Color.Red;
+                                    break;
+
+                            }
+                        }
+                    }
                 }
+
+                
 
                 // Hide the buttons if at start or end of quiz
                 btnBack.Visible = index > 0;
@@ -253,14 +300,18 @@ namespace FlashcardQuiz_GUI
             if (answeredAll)
             {
                 MessageBox.Show("hehe, answered all questions :3 dddddddddddddd    dddddddddddddddd   ddddddddddddddd   dddddddd");
+                Submitted = true;
+                CurrentQuestionIndex = 0;
+                    
+                // Disable interactivity with answers
+                answer1.Enabled = answer2.Enabled = answer3.Enabled = answer4.Enabled = false;
+
+                displayQuestion(CurrentQuestionIndex);
             }
             // Display all questions that need answered
             else
             {
-                quizPanel.Visible = false;
-                //summaryPanel.Visible = true;
-                CurrentQuestionIndex = 0;
-                //displaySummaryQuestion(CurrentQuestionIndex);
+                MessageBox.Show($"Must answer all questions before submitting quiz: \n{string.Join("\n", unanswered)}");
             }
         }
 

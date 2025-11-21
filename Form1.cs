@@ -207,6 +207,7 @@ namespace FlashcardQuiz_GUI
 
                     if (Submitted == true)
                     {
+                        answer1.BackColor = answer2.BackColor = answer3.BackColor = answer4.BackColor = System.Drawing.Color.White;
                         if (saved == CurrentQuiz.Questions[index].CorrectAnswerIndex)
                         {
                             switch (saved)

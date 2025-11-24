@@ -32,6 +32,8 @@
             titleLabel = new Label();
             menuPanel = new Panel();
             quizPanel = new Panel();
+            btnReturn = new Button();
+            finalAttrLabel = new Label();
             btnBack = new Button();
             btnNext = new Button();
             answer4 = new RadioButton();
@@ -80,6 +82,8 @@
             // 
             // quizPanel
             // 
+            quizPanel.Controls.Add(btnReturn);
+            quizPanel.Controls.Add(finalAttrLabel);
             quizPanel.Controls.Add(btnBack);
             quizPanel.Controls.Add(btnNext);
             quizPanel.Controls.Add(answer4);
@@ -95,6 +99,27 @@
             quizPanel.Size = new Size(800, 450);
             quizPanel.TabIndex = 3;
             quizPanel.Visible = false;
+            // 
+            // btnReturn
+            // 
+            btnReturn.Location = new Point(217, 317);
+            btnReturn.Name = "btnReturn";
+            btnReturn.Size = new Size(148, 29);
+            btnReturn.TabIndex = 9;
+            btnReturn.Text = "Return to Menu";
+            btnReturn.UseVisualStyleBackColor = true;
+            btnReturn.Visible = false;
+            btnReturn.Click += btnReturn_Click;
+            // 
+            // finalAttrLabel
+            // 
+            finalAttrLabel.AutoSize = true;
+            finalAttrLabel.Location = new Point(12, 23);
+            finalAttrLabel.Name = "finalAttrLabel";
+            finalAttrLabel.Size = new Size(50, 20);
+            finalAttrLabel.TabIndex = 8;
+            finalAttrLabel.Text = "label1";
+            finalAttrLabel.Visible = false;
             // 
             // btnBack
             // 
@@ -220,5 +245,7 @@
         private Button btnBack;
         private Button btnNext;
         private Button btnSubmit;
+        private Label finalAttrLabel;
+        private Button btnReturn;
     }
 }

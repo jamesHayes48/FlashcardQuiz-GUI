@@ -249,7 +249,7 @@ namespace FlashcardQuiz_GUI
                     }
                 }
 
-                
+
 
                 // Hide the buttons if at start or end of quiz
                 btnBack.Visible = index > 0;
@@ -300,10 +300,19 @@ namespace FlashcardQuiz_GUI
             // Submit quiz if user answered all questions
             if (answeredAll)
             {
-                MessageBox.Show("hehe, answered all questions :3 dddddddddddddd    dddddddddddddddd   ddddddddddddddd   dddddddd");
+                MessageBox.Show("Quiz Completed");
                 Submitted = true;
                 CurrentQuestionIndex = 0;
-                    
+
+                // Disable submit button after quiz is finished
+                btnSubmit.Enabled = false;
+
+                // Display UI elements for final score and percentage
+                DisplayFinalStatsUI();
+
+                // Enable return to menu function
+                btnReturn.Visible = true;
+
                 // Disable interactivity with answers
                 answer1.Enabled = answer2.Enabled = answer3.Enabled = answer4.Enabled = false;
 
@@ -317,22 +326,40 @@ namespace FlashcardQuiz_GUI
         }
 
         /// <summary>
-        /// Find incorrect answers
+        /// Display final stats for UI element
         /// </summary>
-        private List<int> CompareAnswer()
+        void DisplayFinalStatsUI()
         {
-            // Hold questions marked incorrect
-            List<int> incorrectAnswersIndex = new List<int>();
-            for (int i = 0; i <= UserAnswerIndex.Count; i++)
+            Score = FindFinalScore();
+            finalAttrLabel.Text = $"Final Score: {Score}/{CurrentQuiz.Questions.Count} " +
+                $"Grade: {(((double)Score / CurrentQuiz.Questions.Count) * 100):F2}%";
+            finalAttrLabel.Visible = true;
+        }
+
+        /// <summary>
+        /// Calculate the Final Score
+        /// </summary>
+        private int FindFinalScore()
+        {
+            for (int i = 0; i < UserAnswerIndex.Count; i++)
             {
-                // If answers do not match, decrement score and add to incorrect answers for UI
+                // If answers do not match, decrement score
                 if (UserAnswerIndex[i] != CurrentQuiz.Questions[i].CorrectAnswerIndex)
                 {
                     Score--;
-                    incorrectAnswersIndex.Add(i);
                 }
             }
-            return incorrectAnswersIndex;
+            return Score;
+        }
+
+        /// <summary>
+        /// Restart application to return to menu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnReturn_Click(object sender, EventArgs e)
+        {
+            Application.Restart();
         }
 
         /*

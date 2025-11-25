@@ -18,23 +18,8 @@ namespace FlashcardQuiz_GUI
             InitializeComponent();
         }
 
-        // Represent the file path user chooses
-        private string SelectedFilePath { get; set; }
-
-        // Represent the current Quiz from the selected file
-        private Quiz CurrentQuiz = new Quiz();
-
-        // Hold current index of question
-        private int CurrentQuestionIndex { get; set; }
-
-        // Hold saved answers 
-        private List<int> UserAnswerIndex;
-
-        // Hold current score
-        private int Score = 0;
-
-        // Hold state of program
-        private bool Submitted = false;
+        // Define currrent Session
+        QuizSession session = new QuizSession();
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -44,10 +29,6 @@ namespace FlashcardQuiz_GUI
             menuPanel.Visible = true;
             quizPanel.Visible = false;
             quizPanel.BringToFront();
-
-            // Initialize current quiz and user choices
-            CurrentQuiz = new Quiz();
-            UserAnswerIndex = new List<int>();
         }
 
         /// <summary>
@@ -72,28 +53,22 @@ namespace FlashcardQuiz_GUI
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                SelectedFilePath = openFileDialog1.FileName;
-                MessageBox.Show("You selected: " + SelectedFilePath);
+                string userFilePath = openFileDialog1.FileName;
 
                 // Load current selected quiz
-                CurrentQuiz = await LoadQuizAsync(SelectedFilePath);
+                Quiz loadedQuiz = await LoadQuizAsync(userFilePath);
 
-                // Set score to be the number of questions
-                Score = CurrentQuiz.Questions.Count;
+                // Intialize the current sessions variables based on selected path
+                session.IntializeFromQuiz(userFilePath, loadedQuiz);
 
-                // Populate the user answer index list with -1
-                while (UserAnswerIndex.Count != CurrentQuiz.Questions.Count)
-                {
-                    UserAnswerIndex.Add(-1);
-                }
-
+                // Switch to quiz mode
                 menuPanel.Visible = false;
                 quizPanel.Visible = true;
 
-                CurrentQuestionIndex = 0;
+                session.CurrentQuestionIndex = 0;
                 try
                 {
-                    displayQuestion(CurrentQuestionIndex);
+                    displayQuestion(session.CurrentQuestionIndex);
                 }
                 catch (Exception ex)
                 {
@@ -110,14 +85,14 @@ namespace FlashcardQuiz_GUI
         private void btnNext_Click(object sender, EventArgs e)
         {
             if (quizPanel.Visible == true)
-                if (CurrentQuestionIndex < CurrentQuiz.Questions.Count - 1)
+                if (session.CurrentQuestionIndex < session.CurrentQuiz.Questions.Count - 1)
                 {
-                    CurrentQuestionIndex++;
-                    displayQuestion(CurrentQuestionIndex);
+                    session.CurrentQuestionIndex++;
+                    displayQuestion(session.CurrentQuestionIndex);
                 }
                 else
                 {
-                    CurrentQuestionIndex++;
+                    session.CurrentQuestionIndex++;
                     //displaySummaryQuestion(CurrentQuestionIndex);
                 }
         }
@@ -129,10 +104,10 @@ namespace FlashcardQuiz_GUI
         /// <param name="e"></param>
         private void btnBack_Click(object sender, EventArgs e)
         {
-            if (CurrentQuestionIndex > 0)
+            if (session.CurrentQuestionIndex > 0)
             {
-                CurrentQuestionIndex--;
-                displayQuestion(CurrentQuestionIndex);
+                session.CurrentQuestionIndex--;
+                displayQuestion(session.CurrentQuestionIndex);
             }
         }
 
@@ -179,7 +154,7 @@ namespace FlashcardQuiz_GUI
             try
             {
                 // Update the questions and radio buttons
-                Question currentQuestion = CurrentQuiz.Questions[index];
+                Question currentQuestion = session.CurrentQuiz.Questions[index];
                 questionLabel.Text = currentQuestion.QuestionText;
 
                 answer1.Text = currentQuestion.AnswerArray[0];
@@ -187,10 +162,16 @@ namespace FlashcardQuiz_GUI
                 answer3.Text = currentQuestion.AnswerArray[2];
                 answer4.Text = currentQuestion.AnswerArray[3];
 
+                // Ensure UserAnswerIndex is initialized
+                if (session.UserAnswerIndex == null)
+                {
+                    session.UserAnswerIndex = new List<int>();
+                }
+
                 // Check if current index has been answered already,
                 // if not, uncheck the radio buttons
                 // if so, Update with which one is checked
-                if (index >= UserAnswerIndex.Count)
+                if (index >= session.UserAnswerIndex.Count)
                 {
                     answer1.Checked = false;
                     answer2.Checked = false;
@@ -199,16 +180,17 @@ namespace FlashcardQuiz_GUI
                 }
                 else
                 {
-                    int saved = UserAnswerIndex[index];
+                    int saved = session.UserAnswerIndex[index];
                     answer1.Checked = (saved == 0);
                     answer2.Checked = (saved == 1);
                     answer3.Checked = (saved == 2);
                     answer4.Checked = (saved == 3);
 
-                    if (Submitted == true)
+                    if (session.Submitted == true)
                     {
-                        answer1.BackColor = answer2.BackColor = answer3.BackColor = answer4.BackColor = System.Drawing.Color.White;
-                        if (saved == CurrentQuiz.Questions[index].CorrectAnswerIndex)
+                        answer1.BackColor = answer2.BackColor = 
+                            answer3.BackColor = answer4.BackColor = System.Drawing.Color.White;
+                        if (saved == session.CurrentQuiz.Questions[index].CorrectAnswerIndex)
                         {
                             switch (saved)
                             {
@@ -253,8 +235,8 @@ namespace FlashcardQuiz_GUI
 
                 // Hide the buttons if at start or end of quiz
                 btnBack.Visible = index > 0;
-                btnNext.Visible = index < CurrentQuiz.Questions.Count - 1;
-                btnSubmit.Visible = index == CurrentQuiz.Questions.Count - 1;
+                btnNext.Visible = index < session.CurrentQuiz.Questions.Count - 1;
+                btnSubmit.Visible = index == session.CurrentQuiz.Questions.Count - 1;
             }
             catch (Exception ex)
             {
@@ -271,7 +253,7 @@ namespace FlashcardQuiz_GUI
             else if (answer3.Checked) selected = 2;
             else if (answer4.Checked) selected = 3;
 
-            UserAnswerIndex[CurrentQuestionIndex] = selected;
+            session.UserAnswerIndex[session.CurrentQuestionIndex] = selected;
 
         }
 
@@ -288,9 +270,9 @@ namespace FlashcardQuiz_GUI
             // Hold which questions are unanswered
             List<int> unanswered = new List<int>();
 
-            for (int i = 0; i <= UserAnswerIndex.Count - 1; i++)
+            for (int i = 0; i <= session.UserAnswerIndex.Count - 1; i++)
             {
-                if (UserAnswerIndex[i] == -1)
+                if (session.UserAnswerIndex[i] == -1)
                 {
                     unanswered.Add(i + 1);
                     answeredAll = false;
@@ -301,8 +283,8 @@ namespace FlashcardQuiz_GUI
             if (answeredAll)
             {
                 MessageBox.Show("Quiz Completed");
-                Submitted = true;
-                CurrentQuestionIndex = 0;
+                session.Submitted = true;
+                session.CurrentQuestionIndex = 0;
 
                 // Disable submit button after quiz is finished
                 btnSubmit.Enabled = false;
@@ -316,7 +298,7 @@ namespace FlashcardQuiz_GUI
                 // Disable interactivity with answers
                 answer1.Enabled = answer2.Enabled = answer3.Enabled = answer4.Enabled = false;
 
-                displayQuestion(CurrentQuestionIndex);
+                displayQuestion(session.CurrentQuestionIndex);
             }
             // Display all questions that need answered
             else
@@ -330,26 +312,10 @@ namespace FlashcardQuiz_GUI
         /// </summary>
         void DisplayFinalStatsUI()
         {
-            Score = FindFinalScore();
-            finalAttrLabel.Text = $"Final Score: {Score}/{CurrentQuiz.Questions.Count} " +
-                $"Grade: {(((double)Score / CurrentQuiz.Questions.Count) * 100):F2}%";
+            session.CalcFinalScore();
+            finalAttrLabel.Text = $"Final Score: {session.Score}/{session.CurrentQuiz.Questions.Count} " +
+                $"Grade: {(((double) session.Score / session.CurrentQuiz.Questions.Count) * 100):F2}%";
             finalAttrLabel.Visible = true;
-        }
-
-        /// <summary>
-        /// Calculate the Final Score
-        /// </summary>
-        private int FindFinalScore()
-        {
-            for (int i = 0; i < UserAnswerIndex.Count; i++)
-            {
-                // If answers do not match, decrement score
-                if (UserAnswerIndex[i] != CurrentQuiz.Questions[i].CorrectAnswerIndex)
-                {
-                    Score--;
-                }
-            }
-            return Score;
         }
 
         /// <summary>
@@ -361,24 +327,5 @@ namespace FlashcardQuiz_GUI
         {
             Application.Restart();
         }
-
-        /*
-        /// <summary>
-        /// Display if there are incorrect answers or not
-        /// </summary>
-        private void displaySummaryQuestion(int index)
-        {
-            string[] = new string[4];
-            foreach (string qText in CurrentQuiz.Questions[index].AnswerArray)
-            {
-                string
-            }
-
-            // Hide the buttons if at start or end of quiz
-            btnBack.Visible = index > 0;
-            btnNext.Visible = index < CurrentQuiz.Questions.Count - 1;
-            btnQuit.Visible = index == CurrentQuiz.Questions.Count - 1;
-        }
-        */
     }
 }

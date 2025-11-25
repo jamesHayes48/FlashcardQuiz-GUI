@@ -163,7 +163,7 @@ namespace FlashcardQuiz_GUI
             {
                 // Update the questions and radio buttons
                 Question currentQuestion = session.CurrentQuiz.Questions[index];
-                questionLabel.Text = currentQuestion.QuestionText;
+                questionLabel.Text = $"Question {index+1}: {currentQuestion.QuestionText}";
 
                 answer1.Text = currentQuestion.AnswerArray[0];
                 answer2.Text = currentQuestion.AnswerArray[1];

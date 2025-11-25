@@ -190,26 +190,9 @@ namespace FlashcardQuiz_GUI
                     {
                         answer1.BackColor = answer2.BackColor = 
                             answer3.BackColor = answer4.BackColor = System.Drawing.Color.White;
-                        if (saved == session.CurrentQuiz.Questions[index].CorrectAnswerIndex)
-                        {
-                            switch (saved)
-                            {
-                                case 0:
-                                    answer1.BackColor = Color.Green;
-                                    break;
-                                case 1:
-                                    answer2.BackColor = Color.Green;
-                                    break;
-                                case 2:
-                                    answer3.BackColor = Color.Green;
-                                    break;
-                                case 3:
-                                    answer4.BackColor = Color.Green;
-                                    break;
 
-                            }
-                        }
-                        else
+                        // Highlight the incorrect answer if user got it correctly
+                        if (saved != session.CurrentQuiz.Questions[index].CorrectAnswerIndex)
                         {
                             switch (saved)
                             {
@@ -228,10 +211,26 @@ namespace FlashcardQuiz_GUI
 
                             }
                         }
+
+                        // Highlight correct answer anyhow
+                        switch (session.CurrentQuiz.Questions[index].CorrectAnswerIndex)
+                        {
+                            case 0:
+                                answer1.BackColor = Color.Green;
+                                break;
+                            case 1:
+                                answer2.BackColor = Color.Green;
+                                break;
+                            case 2:
+                                answer3.BackColor = Color.Green;
+                                break;
+                            case 3:
+                                answer4.BackColor = Color.Green;
+                                break;
+
+                        }
                     }
                 }
-
-
 
                 // Hide the buttons if at start or end of quiz
                 btnBack.Visible = index > 0;

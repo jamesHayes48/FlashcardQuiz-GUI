@@ -41,13 +41,14 @@ namespace FlashcardQuiz_GUI
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
+                // File path chosen by user
                 string userFilePath = openFileDialog1.FileName;
 
                 // Load current selected quiz
                 Quiz loadedQuiz = await LoadQuizAsync(userFilePath);
 
                 // Intialize the current sessions variables based on selected path
-                session.IntializeFromQuiz(userFilePath, loadedQuiz);
+                session.IntializeFromQuiz(loadedQuiz);
 
                 // Switch to quiz mode
                 menuPanel.Visible = false;

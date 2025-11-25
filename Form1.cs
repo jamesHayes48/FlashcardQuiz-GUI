@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -29,19 +30,6 @@ namespace FlashcardQuiz_GUI
             menuPanel.Visible = true;
             quizPanel.Visible = false;
             quizPanel.BringToFront();
-        }
-
-        /// <summary>
-        /// Check if Answer is checked and which radio button was it.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Answer_CheckedChanged(object? sender, EventArgs e)
-        {
-            if (sender is RadioButton rb && rb.Checked)
-            {
-                SaveCurrentAnswer();
-            }
         }
 
         /// <summary>
@@ -74,6 +62,19 @@ namespace FlashcardQuiz_GUI
                 {
                     MessageBox.Show(ex.Message);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Check if Answer is checked and which radio button was it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Answer_CheckedChanged(object? sender, EventArgs e)
+        {
+            if (sender is RadioButton rb && rb.Checked)
+            {
+                SaveCurrentAnswer();
             }
         }
 
@@ -136,7 +137,8 @@ namespace FlashcardQuiz_GUI
 
                     // Check if line is formatted with delimeter
                     if (data.Length < 5)
-                        throw new Exception($"Line {lineNumber}: Expected 1 Question and 4 Answers separated with delimeter {delimiter}, format contains {data.Length} parts");
+                        throw new Exception($"Line {lineNumber}: Expected 1 Question and 4 Answers separated with delimeter {delimiter}. " +
+                            $"Current format contains {data.Length} parts");
 
                     // Take the answers from the line input
                     string[] answers = data.Skip(1).ToArray();
@@ -149,6 +151,11 @@ namespace FlashcardQuiz_GUI
             return quiz;
         }
 
+        /// <summary>
+        /// Display the current question
+        /// Display will change  to show correct and incorrect answers when completed.
+        /// </summary>
+        /// <param name="index"></param>
         private void displayQuestion(int index)
         {
             try
@@ -188,47 +195,7 @@ namespace FlashcardQuiz_GUI
 
                     if (session.Submitted == true)
                     {
-                        answer1.BackColor = answer2.BackColor = 
-                            answer3.BackColor = answer4.BackColor = System.Drawing.Color.White;
-
-                        // Highlight the incorrect answer if user got it correctly
-                        if (saved != session.CurrentQuiz.Questions[index].CorrectAnswerIndex)
-                        {
-                            switch (saved)
-                            {
-                                case 0:
-                                    answer1.BackColor = Color.Red;
-                                    break;
-                                case 1:
-                                    answer2.BackColor = Color.Red;
-                                    break;
-                                case 2:
-                                    answer3.BackColor = Color.Red;
-                                    break;
-                                case 3:
-                                    answer4.BackColor = Color.Red;
-                                    break;
-
-                            }
-                        }
-
-                        // Highlight correct answer anyhow
-                        switch (session.CurrentQuiz.Questions[index].CorrectAnswerIndex)
-                        {
-                            case 0:
-                                answer1.BackColor = Color.Green;
-                                break;
-                            case 1:
-                                answer2.BackColor = Color.Green;
-                                break;
-                            case 2:
-                                answer3.BackColor = Color.Green;
-                                break;
-                            case 3:
-                                answer4.BackColor = Color.Green;
-                                break;
-
-                        }
+                        ShowCorrectAnswers(saved, index);
                     }
                 }
 
@@ -303,6 +270,51 @@ namespace FlashcardQuiz_GUI
             else
             {
                 MessageBox.Show($"Must answer all questions before submitting quiz: \n{string.Join("\n", unanswered)}");
+            }
+        }
+
+        private void ShowCorrectAnswers(int userAnswer, int index)
+        {
+            answer1.BackColor = answer2.BackColor =
+                           answer3.BackColor = answer4.BackColor = System.Drawing.Color.White;
+
+            // Highlight the incorrect answer if user got it correctly
+            if (userAnswer != session.CurrentQuiz.Questions[index].CorrectAnswerIndex)
+            {
+                switch (userAnswer)
+                {
+                    case 0:
+                        answer1.BackColor = Color.Red;
+                        break;
+                    case 1:
+                        answer2.BackColor = Color.Red;
+                        break;
+                    case 2:
+                        answer3.BackColor = Color.Red;
+                        break;
+                    case 3:
+                        answer4.BackColor = Color.Red;
+                        break;
+
+                }
+            }
+
+            // Highlight correct answer when completed
+            switch (session.CurrentQuiz.Questions[index].CorrectAnswerIndex)
+            {
+                case 0:
+                    answer1.BackColor = Color.Green;
+                    break;
+                case 1:
+                    answer2.BackColor = Color.Green;
+                    break;
+                case 2:
+                    answer3.BackColor = Color.Green;
+                    break;
+                case 3:
+                    answer4.BackColor = Color.Green;
+                    break;
+
             }
         }
 

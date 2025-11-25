@@ -181,10 +181,8 @@ namespace FlashcardQuiz_GUI
                 // if so, Update with which one is checked
                 if (index >= session.UserAnswerIndex.Count)
                 {
-                    answer1.Checked = false;
-                    answer2.Checked = false;
-                    answer3.Checked = false;
-                    answer4.Checked = false;
+                    answer1.Checked = answer2.Checked = 
+                        answer3.Checked = answer4.Checked = false;
                 }
                 else
                 {
@@ -211,15 +209,35 @@ namespace FlashcardQuiz_GUI
             }
         }
 
+        /// <summary>
+        /// Save the selected answer
+        /// </summary>
         private void SaveCurrentAnswer()
         {
             int selected = -1;
 
-            if (answer1.Checked) selected = 0;
-            else if (answer2.Checked) selected = 1;
-            else if (answer3.Checked) selected = 2;
-            else if (answer4.Checked) selected = 3;
+            // Check for which radio button was selected then check which was selected through switch case
+            var checkedRb = quizPanel.Controls.OfType<RadioButton>().FirstOrDefault(answer => answer.Checked);
+            switch (checkedRb?.Tag)
+            {
+                case "A":
+                    selected = 0;
+                    break;
+                case "B":
+                    selected = 1; 
+                    break;
+                case "C":
+                    selected = 2;
+                    break;
+                case "D":
+                    selected = 3;
+                    break;
+                default:
+                    selected = -1; 
+                    break;
+            }
 
+            // Save the answer in the session's answer list
             session.UserAnswerIndex[session.CurrentQuestionIndex] = selected;
 
         }

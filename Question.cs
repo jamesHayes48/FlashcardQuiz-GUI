@@ -25,11 +25,6 @@ namespace FlashcardQuiz_GUI
             AnswerArray = answerArray;
         }
 
-        public void DisplayAnswer()
-        {
-            Console.WriteLine($"Correct Answer: {AnswerArray[CorrectAnswerIndex]}");
-        }
-
         public bool IsCorrect(int userAnswerIndex)
         {
             return userAnswerIndex == CorrectAnswerIndex;

@@ -42,7 +42,7 @@ namespace FlashcardQuiz_GUI
             for (int i = 0; i < UserAnswerIndex.Count; i++)
             {
                 // If answers do not match, decrement score
-                if (UserAnswerIndex[i] != CurrentQuiz.Questions[i].CorrectAnswerIndex)
+                if (!CurrentQuiz.Questions[i].IsCorrect(UserAnswerIndex[i]))
                 {
                     Score--;
                 }

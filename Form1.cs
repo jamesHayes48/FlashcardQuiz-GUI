@@ -44,28 +44,38 @@ namespace FlashcardQuiz_GUI
                 // File path chosen by user
                 string userFilePath = openFileDialog1.FileName;
 
-                // Load current selected quiz
-                Quiz loadedQuiz = await LoadQuizAsync(userFilePath);
-
-                // Randomize order of questions
-                loadedQuiz.RandomizeQuestionOrder();
-
-                // Intialize the current sessions variables based on selected path
-                session.IntializeFromQuiz(loadedQuiz);
-
-                // Switch to quiz mode
-                menuPanel.Visible = false;
-                quizPanel.Visible = true;
-
-                session.CurrentQuestionIndex = 0;
-                try
+                // If file does not exist, prevent user from being able to enter a non-existant file
+                if (!File.Exists(userFilePath))
                 {
-                    displayQuestion(session.CurrentQuestionIndex);
+                    MessageBox.Show($"{userFilePath} does not exist");
                 }
-                catch (Exception ex)
+                // Continue program if file does exist
+                else
                 {
-                    MessageBox.Show(ex.Message);
+                    // Load current selected quiz
+                    Quiz loadedQuiz = await LoadQuizAsync(userFilePath);
+
+                    // Randomize order of questions
+                    loadedQuiz.RandomizeQuestionOrder();
+
+                    // Intialize the current sessions variables based on selected path
+                    session.IntializeFromQuiz(loadedQuiz);
+
+                    // Switch to quiz mode
+                    menuPanel.Visible = false;
+                    quizPanel.Visible = true;
+
+                    session.CurrentQuestionIndex = 0;
+                    try
+                    {
+                        displayQuestion(session.CurrentQuestionIndex);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
+                    
             }
         }
 
@@ -144,14 +154,21 @@ namespace FlashcardQuiz_GUI
                         throw new Exception($"Line {lineNumber}: Expected 1 Question and 4 Answers separated with delimeter {delimiter}. " +
                             $"Current format contains {data.Length} parts");
 
-                    // Take the answers from the line input
-                    string[] answers = data.Skip(1).ToArray();
+                        // Take the answers from the line input
+                        string[] answers = data.Skip(1).ToArray();
 
                     // Create and add question to quiz
                     Question newQuestion = new Question(data[0], answers);
                     quiz.AddQuestion(newQuestion);
                 }
             }
+
+            // Prevent user from completing a quiz that does not exist
+            if (quiz.Questions.Count == 0)
+            {
+                throw new("Error: Selected file is all whitespace or is empty");
+            }
+
             return quiz;
         }
 

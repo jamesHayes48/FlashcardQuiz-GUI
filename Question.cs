@@ -12,6 +12,9 @@ namespace FlashcardQuiz_GUI
         {
             QuestionText = questionText;
 
+            // Set to sentinel value for error checking
+            CorrectAnswerIndex = -1;
+
             // Assign Correct answer index based on where the star is located
             for (int i = 0; i < answerArray.Length; i++)
             {
@@ -22,6 +25,8 @@ namespace FlashcardQuiz_GUI
                     answerArray[i] = answerArray[i].Substring(1);
                 }
             }
+            if (CorrectAnswerIndex == -1)
+                throw new Exception("Error: No correct answer indicated with '*'. Set one answer be correct");
             AnswerArray = answerArray;
         }
 

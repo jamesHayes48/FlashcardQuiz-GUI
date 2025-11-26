@@ -47,6 +47,9 @@ namespace FlashcardQuiz_GUI
                 // Load current selected quiz
                 Quiz loadedQuiz = await LoadQuizAsync(userFilePath);
 
+                // Randomize order of questions
+                loadedQuiz.RandomizeQuestionOrder();
+
                 // Intialize the current sessions variables based on selected path
                 session.IntializeFromQuiz(loadedQuiz);
 

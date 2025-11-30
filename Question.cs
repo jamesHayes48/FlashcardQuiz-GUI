@@ -4,8 +4,13 @@ namespace FlashcardQuiz_GUI
 {
     public class Question
     {
+        // Hold Text of the question
         public string QuestionText { get; set; }
+
+        // Hold array of answers
         public string[] AnswerArray { get; set; }
+
+        // Hold correct answer
         public int CorrectAnswerIndex { get; set; }
 
         public Question(string questionText, string[] answerArray)

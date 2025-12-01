@@ -71,6 +71,8 @@
             // 
             // menuPanel
             // 
+            menuPanel.AutoSize = true;
+            menuPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             menuPanel.Controls.Add(titleLabel);
             menuPanel.Controls.Add(btnOpenFile);
             menuPanel.Dock = DockStyle.Fill;
@@ -82,6 +84,8 @@
             // 
             // quizPanel
             // 
+            quizPanel.AutoSize = true;
+            quizPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             quizPanel.Controls.Add(btnReturn);
             quizPanel.Controls.Add(finalAttrLabel);
             quizPanel.Controls.Add(btnBack);
@@ -228,6 +232,7 @@
             quizPanel.ResumeLayout(false);
             quizPanel.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

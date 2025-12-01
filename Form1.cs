@@ -315,7 +315,7 @@ namespace FlashcardQuiz_GUI
         private void ShowCorrectAnswers(int userAnswer, int index)
         {
             answer1.BackColor = answer2.BackColor =
-                           answer3.BackColor = answer4.BackColor = System.Drawing.Color.White;
+                           answer3.BackColor = answer4.BackColor = quizPanel.BackColor;
 
             // Highlight the incorrect answer if user got it correctly
             if (userAnswer != session.CurrentQuiz.Questions[index].CorrectAnswerIndex)
@@ -323,16 +323,16 @@ namespace FlashcardQuiz_GUI
                 switch (userAnswer)
                 {
                     case 0:
-                        answer1.BackColor = Color.Red;
+                        answer1.BackColor = Color.IndianRed;
                         break;
                     case 1:
-                        answer2.BackColor = Color.Red;
+                        answer2.BackColor = Color.IndianRed;
                         break;
                     case 2:
-                        answer3.BackColor = Color.Red;
+                        answer3.BackColor = Color.IndianRed;
                         break;
                     case 3:
-                        answer4.BackColor = Color.Red;
+                        answer4.BackColor = Color.IndianRed;
                         break;
 
                 }
@@ -342,16 +342,16 @@ namespace FlashcardQuiz_GUI
             switch (session.CurrentQuiz.Questions[index].CorrectAnswerIndex)
             {
                 case 0:
-                    answer1.BackColor = Color.Green;
+                    answer1.BackColor = Color.MediumSeaGreen;
                     break;
                 case 1:
-                    answer2.BackColor = Color.Green;
+                    answer2.BackColor = Color.MediumSeaGreen;
                     break;
                 case 2:
-                    answer3.BackColor = Color.Green;
+                    answer3.BackColor = Color.MediumSeaGreen;
                     break;
                 case 3:
-                    answer4.BackColor = Color.Green;
+                    answer4.BackColor = Color.MediumSeaGreen;
                     break;
 
             }

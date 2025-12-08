@@ -2,18 +2,29 @@
 
 namespace FlashcardQuiz_GUI
 {
-    public class Question
+    /// <summary>
+    /// Abstract class for future question types
+    /// </summary>
+    public abstract class Question
     {
         // Hold Text of the question
-        public string QuestionText { get; set; }
+        public string? QuestionText { get; set; }
 
         // Hold array of answers
-        public string[] AnswerArray { get; set; }
+        public string[]? AnswerArray { get; set; }
 
         // Hold correct answer
         public int CorrectAnswerIndex { get; set; }
 
-        public Question(string questionText, string[] answerArray)
+        public abstract bool IsCorrect(int userAnswerIndex);
+    }
+
+    /// <summary>
+    /// Single answer, multiple choice inherit from abstract class Question
+    /// </summary>
+    public class MultipleChoiceQuestion : Question
+    {
+        public MultipleChoiceQuestion(string questionText, string[] answerArray)
         {
             QuestionText = questionText;
 
@@ -35,7 +46,7 @@ namespace FlashcardQuiz_GUI
             AnswerArray = answerArray;
         }
 
-        public bool IsCorrect(int userAnswerIndex)
+        public override bool IsCorrect(int userAnswerIndex)
         {
             return userAnswerIndex == CorrectAnswerIndex;
         }

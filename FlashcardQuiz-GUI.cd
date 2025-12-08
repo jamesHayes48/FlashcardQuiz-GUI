@@ -13,7 +13,7 @@
   <Class Name="FlashcardQuiz_GUI.Form1">
     <Position X="1.75" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>ABAAgBAAECAAAAAAwCGASNACABGAAAFAACQAAkQQgAA=</HashCode>
+      <HashCode>AAAAgBAAECAAAAABwCGASNACABGAAAFAACQAAkQQgAA=</HashCode>
       <FileName>Form1.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -23,19 +23,41 @@
   <Class Name="FlashcardQuiz_GUI.Quiz">
     <Position X="5" Y="4" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAAIAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Quiz.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="Questions" />
     </ShowAsCollectionAssociation>
   </Class>
+  <Class Name="FlashcardQuiz_GUI.FiletoQuizLoader" Collapsed="true">
+    <Position X="8" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FiletoQuizLoader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FlashcardQuiz_GUI.MultipleChoiceQuestion">
+    <Position X="3.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Question.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Class Name="FlashcardQuiz_GUI.Question">
-    <Position X="5.5" Y="6.25" Width="1.5" />
+    <Position X="4.5" Y="6" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAABAAAAAAAAAgAAAAAAQAAAAAAAAAAIAAAAAAAA=</HashCode>
       <FileName>Question.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Interface Name="FlashcardQuiz_GUI.IQuizLoader" Collapsed="true">
+    <Position X="8" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FiletoQuizLoader.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

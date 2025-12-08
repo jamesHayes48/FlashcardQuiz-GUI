@@ -22,6 +22,8 @@ namespace FlashcardQuiz_GUI
         // Define currrent Session
         QuizSession session = new QuizSession();
 
+        // Define Loader Class
+        FiletoQuizLoader loader = new FiletoQuizLoader();
         private void Form1_Load(object sender, EventArgs e)
         {
             // Set quiz panel to be invisible at start
@@ -53,7 +55,7 @@ namespace FlashcardQuiz_GUI
                 else
                 {
                     // Load current selected quiz
-                    Quiz loadedQuiz = await LoadQuizAsync(userFilePath);
+                    Quiz loadedQuiz = await loader.LoadQuizAsync(userFilePath);
 
                     // Randomize order of questions
                     loadedQuiz.RandomizeQuestionOrder();
@@ -75,7 +77,6 @@ namespace FlashcardQuiz_GUI
                         MessageBox.Show(ex.Message);
                     }
                 }
-                    
             }
         }
 
@@ -126,51 +127,7 @@ namespace FlashcardQuiz_GUI
             }
         }
 
-        /// <summary>
-        /// Start loading the quiz asynchronusly from the selected file path
-        /// </summary>
-        /// <param name="filePath"></param>
-        private async Task<Quiz> LoadQuizAsync(string filePath)
-        {
-            char delimiter = '|';
-            Quiz quiz = new Quiz();
-            int lineNumber = 0;
-
-            // Read file asynchronusly
-            using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true))
-            using (var streamReader = new StreamReader(fileStream))
-            {
-                string? line;
-                while ((line = await streamReader.ReadLineAsync()) != null)
-                {
-                    // Skip line if it is null or whitespace
-                    if (string.IsNullOrWhiteSpace(line))
-                        continue;
-
-                    string[] data = line.Split(delimiter);
-
-                    // Check if line is formatted with delimeter
-                    if (data.Length < 5)
-                        throw new Exception($"Line {lineNumber}: Expected 1 Question and 4 Answers separated with delimeter {delimiter}. " +
-                            $"Current format contains {data.Length} parts");
-
-                        // Take the answers from the line input
-                        string[] answers = data.Skip(1).ToArray();
-
-                    // Create and add question to quiz
-                    Question newQuestion = new Question(data[0], answers);
-                    quiz.AddQuestion(newQuestion);
-                }
-            }
-
-            // Prevent user from completing a quiz that does not exist
-            if (quiz.Questions.Count == 0)
-            {
-                throw new("Error: Selected file is all whitespace or is empty");
-            }
-
-            return quiz;
-        }
+        
 
         /// <summary>
         /// Display the current question

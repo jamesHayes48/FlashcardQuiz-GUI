@@ -142,10 +142,10 @@ namespace FlashcardQuiz_GUI
                 Question currentQuestion = session.CurrentQuiz.Questions[index];
                 questionLabel.Text = $"Question {index+1}: {currentQuestion.QuestionText}";
 
-                answer1.Text = currentQuestion.AnswerArray[0];
-                answer2.Text = currentQuestion.AnswerArray[1];
-                answer3.Text = currentQuestion.AnswerArray[2];
-                answer4.Text = currentQuestion.AnswerArray[3];
+                answer1.Text = currentQuestion.AnswerArray?[0];
+                answer2.Text = currentQuestion.AnswerArray?[1];
+                answer3.Text = currentQuestion.AnswerArray?[2];
+                answer4.Text = currentQuestion.AnswerArray?[3];
 
                 // Ensure UserAnswerIndex is initialized
                 if (session.UserAnswerIndex == null)

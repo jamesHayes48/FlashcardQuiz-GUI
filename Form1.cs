@@ -269,6 +269,11 @@ namespace FlashcardQuiz_GUI
             }
         }
 
+        /// <summary>
+        /// Display the correct and incorrect answer on the form
+        /// </summary>
+        /// <param name="userAnswer"></param>
+        /// <param name="index"></param>
         private void ShowCorrectAnswers(int userAnswer, int index)
         {
             answer1.BackColor = answer2.BackColor =

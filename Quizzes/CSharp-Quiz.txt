@@ -1,0 +1,10 @@
+What keyword is used to define a class in C#?|object|define|*class|new
+Which method is the entry point of a C# program?|Start()|Run()|Execute()|*Main()
+What is the correct way to declare an integer variable?|int = age;|age int;|integer age;|*int age;
+Which symbol is used for single-line comments in C#?|<!-- -->|**|*//|##
+Which access modifier makes a member accessible only within its own class?|public|protected|internal|*private
+What is the name of C#’s garbage-collected runtime environment?|CLR+|JVM|*CLR|CORE
+Which keyword is used to create an object in C#?|object|make|instance|*new
+What is used to handle exceptions in C#?|catch/throw|if/else|goto|*try/catch
+Which type represents true or false values?|truth|bit|*bool|boolean
+Which loop continues until a condition is false?|for each|repeat|*while|loop

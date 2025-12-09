@@ -13,9 +13,7 @@ namespace FlashcardQuiz_GUI
         // Hold array of answers
         public string[]? AnswerArray { get; set; }
 
-        // Hold correct answer
-        public int CorrectAnswerIndex { get; set; }
-
+        // Check for correct answers
         public abstract bool IsCorrect(int userAnswerIndex);
     }
 
@@ -24,6 +22,9 @@ namespace FlashcardQuiz_GUI
     /// </summary>
     public class MultipleChoiceQuestion : Question
     {
+        // Hold correct answer
+        public int CorrectAnswerIndex { get; set; }
+
         public MultipleChoiceQuestion(string questionText, string[] answerArray)
         {
             QuestionText = questionText;

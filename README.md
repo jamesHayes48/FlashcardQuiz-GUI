@@ -1,6 +1,10 @@
 # Flashcard Quiz 
 An application that allows the user to test themselves on topics of their choosing with a .txt file
 
+## Requirements
+- Must have .NET 9 and C#
+- Must have capability to run winforms
+
 ## Instructions
 1. Download this GitHub Repository
 2. Run the code (preferablly with Visual Studio for Winform Integration)
